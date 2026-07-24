@@ -19,7 +19,7 @@ export default function BottomTabBar({ hidden = false, savedCount = 0 }: BottomT
     >
       <div className="relative">
         {/* 유리처럼 비치는 배경 레이어 */}
-        <div className="absolute inset-0 rounded-t-[26px] border-t border-white/60 bg-white/80 shadow-[0_-10px_34px_-14px_rgba(20,23,28,.30)] backdrop-blur-2xl" />
+        <div className="absolute inset-0 rounded-t-[26px] border-t border-white/60 bg-white/[0.94] shadow-[0_-10px_34px_-14px_rgba(20,23,28,.30)] backdrop-blur-md" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px rounded-t-[26px] bg-gradient-to-r from-transparent via-ink-200/70 to-transparent" />
 
         <div className="relative flex h-[68px] items-stretch">

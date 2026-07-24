@@ -100,13 +100,14 @@ export default {
           '100%': { opacity: '0', transform: 'translateY(-130%) scale(.94)' },
         },
         /* 화면 전환 */
+        /* 투명도는 건드리지 않습니다. 화면 전체가 다시 그려져 하단 바가 늦게 채워집니다 */
         'page-push': {
-          '0%': { opacity: '0', transform: 'translate3d(30px,0,0)' },
-          '100%': { opacity: '1', transform: 'translate3d(0,0,0)' },
+          '0%': { transform: 'translate3d(28px,0,0)' },
+          '100%': { transform: 'translate3d(0,0,0)' },
         },
         'page-pop': {
-          '0%': { opacity: '0', transform: 'translate3d(-30px,0,0)' },
-          '100%': { opacity: '1', transform: 'translate3d(0,0,0)' },
+          '0%': { transform: 'translate3d(-28px,0,0)' },
+          '100%': { transform: 'translate3d(0,0,0)' },
         },
         'page-fade': {
           '0%': { opacity: '0', transform: 'translate3d(0,8px,0) scale(.994)' },
