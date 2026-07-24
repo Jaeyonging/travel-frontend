@@ -10,25 +10,6 @@ import { formatMinutes } from '@/lib/format'
 import { useCandidates, useCatalog, useTrip } from '@/store'
 import { ROUTES } from '@/app/routes'
 
-type RoadmapStatus = 'done' | 'current' | 'planned'
-
-const ROADMAP: { phase: string; desc: string; status: RoadmapStatus }[] = [
-  { phase: '1단계', desc: '강릉·속초 1박 2일 자차 여행 완성', status: 'done' },
-  {
-    phase: '2단계 · 진행 중',
-    desc: '강원 5개 권역 전역 확장. 장소 탐색은 전 권역, 일정 생성은 동해안권부터',
-    status: 'current',
-  },
-  { phase: '3단계', desc: 'OCR·음성·댓글 분석, 대중교통·날씨 반영', status: 'planned' },
-  { phase: '4단계', desc: '영어·중국어·일본어 콘텐츠 분석', status: 'planned' },
-]
-
-const ROADMAP_STYLE: Record<RoadmapStatus, { box: string; phase: string }> = {
-  done: { box: 'bg-ink-50', phase: 'text-ink-500' },
-  current: { box: 'bg-brand-50', phase: 'text-brand-600' },
-  planned: { box: 'bg-ink-50/60', phase: 'text-ink-300' },
-}
-
 const MENU: { icon: IconName; label: string; sub?: string }[] = [
   { icon: 'bell', label: '알림 설정' },
   { icon: 'shield', label: '데이터 및 개인정보', sub: '원본 영상은 저장하지 않아요' },
@@ -158,28 +139,6 @@ export default function MyPage() {
       <DevErrorSimulator />
 
       <Divider />
-
-      <section className="px-5 py-5">
-        <h2 className="text-[15px] font-extrabold tracking-tight">서비스 로드맵</h2>
-        <ol className="mt-3 space-y-2">
-          {ROADMAP.map((step) => {
-            const style = ROADMAP_STYLE[step.status]
-            return (
-              <li key={step.phase} className={`rounded-2xl p-3.5 ${style.box}`}>
-                <p
-                  className={`flex items-center gap-1 text-[11.5px] font-extrabold ${style.phase}`}
-                >
-                  {step.status === 'done' && <Icon name="check" size={12} strokeWidth={3} />}
-                  {step.phase}
-                </p>
-                <p className="mt-1 text-[13px] font-semibold leading-relaxed text-ink-700">
-                  {step.desc}
-                </p>
-              </li>
-            )
-          })}
-        </ol>
-      </section>
 
       <div className="px-5 pb-6">
         <Button
