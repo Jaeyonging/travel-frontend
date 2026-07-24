@@ -42,8 +42,8 @@ export default {
       },
       fontFamily: {
         sans: [
-          'Pretendard Variable',
-          'Pretendard',
+          'Wanted Sans Variable',
+          'Wanted Sans',
           '-apple-system',
           'BlinkMacSystemFont',
           'Apple SD Gothic Neo',
