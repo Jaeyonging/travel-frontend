@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCallback, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Icon from '@/components/icon'
 import { Button } from '@/components/ui'
 import { TopBar } from '@/components/layout'
@@ -11,15 +11,27 @@ import {
 } from '@/features/itinerary'
 import { useCandidates, useCatalog, useTrip } from '@/store'
 import { ROUTES } from '@/app/routes'
-import type { Itinerary, TripCondition } from '@/types'
+import type { Itinerary, Place, TripCondition } from '@/types'
 
 export default function PlanNewPage() {
   const navigate = useNavigate()
-  const { candidates, removeCandidate } = useCandidates()
-  const { regions } = useCatalog()
+  const { state } = useLocation() as { state?: { placeIds?: string[] } }
+
+  const { candidates } = useCandidates()
+  const { regions, getPlace } = useCatalog()
   const { condition, setCondition } = useTrip()
 
+  // 특정 장소만 넘겨받으면 그 장소로 시작합니다 (분석 결과에서 바로 온 경우)
+  const [selectedIds, setSelectedIds] = useState<string[]>(
+    () => state?.placeIds ?? candidates.map((p) => p.id),
+  )
+  const [subsetMode, setSubsetMode] = useState(Boolean(state?.placeIds))
   const [draft, setDraft] = useState<TripCondition>(condition)
+
+  const selectedPlaces = useMemo(
+    () => selectedIds.map((id) => getPlace(id)).filter((p): p is Place => Boolean(p)),
+    [selectedIds, getPlace],
+  )
 
   const handleSuccess = useCallback(
     (itinerary: Itinerary) => {
@@ -31,15 +43,20 @@ export default function PlanNewPage() {
 
   const generation = useItineraryGeneration(handleSuccess)
 
-  const usedRegionIds = Array.from(new Set(candidates.map((p) => p.regionId)))
+  const usedRegionIds = Array.from(new Set(selectedPlaces.map((p) => p.regionId)))
   const crossRegion = usedRegionIds.length > 1
   const usedRegionNames = usedRegionIds
     .map((id) => regions.find((r) => r.id === id)?.name)
     .filter(Boolean)
     .join(', ')
 
+  const useAllSaved = () => {
+    setSelectedIds(candidates.map((p) => p.id))
+    setSubsetMode(false)
+  }
+
   const start = () =>
-    generation.generate({ placeIds: candidates.map((p) => p.id), condition: draft })
+    generation.generate({ placeIds: selectedIds, condition: draft })
 
   if (generation.isGenerating) {
     return (
@@ -72,13 +89,31 @@ export default function PlanNewPage() {
     )
   }
 
+  const hiddenCount = candidates.length - selectedIds.length
+
   return (
     <div className="pb-2">
       <TopBar title="일정 만들기" back />
 
+      {subsetMode && hiddenCount > 0 && (
+        <div className="mx-5 mt-4 flex items-center gap-2.5 rounded-2xl bg-brand-50 px-4 py-3">
+          <Icon name="play" size={15} className="shrink-0 text-brand-500" />
+          <p className="min-w-0 flex-1 text-[12px] leading-relaxed text-brand-700">
+            이 영상에서 찾은 {selectedIds.length}곳으로만 만듭니다
+          </p>
+          <button
+            type="button"
+            onClick={useAllSaved}
+            className="pressable shrink-0 whitespace-nowrap rounded-lg bg-white px-2.5 py-1.5 text-[11.5px] font-extrabold text-brand-600"
+          >
+            {candidates.length}곳 전체로
+          </button>
+        </div>
+      )}
+
       <SelectedPlacesStrip
-        places={candidates}
-        onRemove={removeCandidate}
+        places={selectedPlaces}
+        onRemove={(id) => setSelectedIds((prev) => prev.filter((x) => x !== id))}
         onEdit={() => navigate(ROUTES.saved)}
       />
 
@@ -95,15 +130,15 @@ export default function PlanNewPage() {
 
       <div className="px-5 pb-4 pt-6">
         <p className="text-[11.5px] leading-relaxed text-ink-300">
-          지역은 담은 장소를 기준으로 자동 판별해요{usedRegionNames && ` (${usedRegionNames})`}.
+          지역은 고른 장소를 기준으로 자동 판별해요{usedRegionNames && ` (${usedRegionNames})`}.
           백엔드 연동 전이라 조건과 무관하게 준비된 목업 일정이 생성됩니다.
         </p>
       </div>
 
       <div className="sticky bottom-0 z-40 border-t border-ink-100 bg-white px-5 py-3 pb-safe">
-        <Button size="lg" full onClick={start} disabled={candidates.length < 2}>
+        <Button size="lg" full onClick={start} disabled={selectedIds.length < 2}>
           <Icon name="sparkle" size={18} strokeWidth={2.2} />
-          일정 만들기
+          {selectedIds.length}곳으로 일정 만들기
         </Button>
       </div>
     </div>

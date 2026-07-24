@@ -5,6 +5,7 @@ import { Badge, Button } from '@/components/ui'
 import { TopBar } from '@/components/layout'
 import { ErrorState, LoadingScreen, useToast } from '@/components/feedback'
 import { PlaceDetailSheet } from '@/features/places'
+import { PlanScopeSheet } from '@/features/itinerary'
 import {
   ExtractedPlaceRow,
   SnsSourceCard,
@@ -21,11 +22,12 @@ export default function ExtractResultPage() {
   const toast = useToast()
 
   const { snsContents } = useCatalog()
-  const { isCandidate, toggleCandidate, addCandidates } = useCandidates()
+  const { candidateIds, isCandidate, toggleCandidate, addCandidates } = useCandidates()
 
   const url = state?.url ?? snsContents[0]?.url ?? ''
   const analysis = useSnsAnalysis(url)
   const [detail, setDetail] = useState<Place | null>(null)
+  const [scopeOpen, setScopeOpen] = useState(false)
 
   if (analysis.isLoading) {
     return (
@@ -70,13 +72,27 @@ export default function ExtractResultPage() {
     toast(wasSaved ? '담은 곳에서 뺐어요' : '담은 곳에 추가했어요', wasSaved ? 'remove' : 'success')
   }
 
+  // 이번에 찾은 장소 외에 후보함에 담아둔 게 더 있는지
+  const foundIds = places.map((p) => p.id)
+  const otherSavedCount = candidateIds.filter((id) => !foundIds.includes(id)).length
+
+  const goToPlan = (scope: 'found' | 'all') => {
+    addCandidates(foundIds)
+    navigate(ROUTES.planNew, { state: scope === 'found' ? { placeIds: foundIds } : undefined })
+  }
+
   const handlePrimary = () => {
-    if (notAdded.length === 0) {
-      navigate(ROUTES.planNew)
+    if (notAdded.length > 0) {
+      addCandidates(foundIds)
+      toast(`${notAdded.length}곳을 담았어요`)
       return
     }
-    addCandidates(places.map((p) => p.id))
-    toast(`${notAdded.length}곳을 담았어요`)
+    // 담아둔 장소가 더 있으면 어떤 범위로 만들지 물어봅니다
+    if (otherSavedCount > 0) {
+      setScopeOpen(true)
+      return
+    }
+    goToPlan('found')
   }
 
   return (
@@ -134,6 +150,17 @@ export default function ExtractResultPage() {
           {notAdded.length ? `${notAdded.length}곳 모두 담기` : '이 장소들로 일정 만들기'}
         </Button>
       </div>
+
+      <PlanScopeSheet
+        open={scopeOpen}
+        onClose={() => setScopeOpen(false)}
+        foundCount={places.length}
+        savedCount={candidateIds.length}
+        onPick={(scope) => {
+          setScopeOpen(false)
+          goToPlan(scope)
+        }}
+      />
 
       <PlaceDetailSheet place={detail} onClose={() => setDetail(null)} />
     </div>
