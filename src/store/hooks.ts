@@ -26,3 +26,9 @@ export function useTrip() {
     useStore()
   return { itinerary, condition, setCondition, excludedPlaceIds, toggleExcluded, getPlace }
 }
+
+/** 알림 셀렉터 */
+export function useNotifications() {
+  const { notifications, unreadCount, markNotificationRead, markAllNotificationsRead } = useStore()
+  return { notifications, unreadCount, markNotificationRead, markAllNotificationsRead }
+}

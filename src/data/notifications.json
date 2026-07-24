@@ -1,0 +1,66 @@
+[
+  {
+    "id": "n-1",
+    "type": "analysis",
+    "title": "장소 3곳을 찾았어요",
+    "body": "'속초 야경 산책 코스' 영상에서 속초해수욕장, 아바이마을, 외옹치 바다향기로를 찾았습니다.",
+    "createdAt": "2026-07-24T09:12:00",
+    "read": false,
+    "to": "/extract/result",
+    "snsUrl": "https://www.instagram.com/reel/sokcho-night-walk"
+  },
+  {
+    "id": "n-2",
+    "type": "verification",
+    "title": "확인이 필요한 장소가 있어요",
+    "body": "'울산바위 전망 코스'는 관광공사 데이터에서 찾지 못했습니다. 일정에 넣기 전에 확인해 주세요.",
+    "createdAt": "2026-07-24T08:40:00",
+    "read": false,
+    "to": "/saved"
+  },
+  {
+    "id": "n-3",
+    "type": "festival",
+    "title": "여행 기간에 열리는 축제가 있어요",
+    "body": "속초 여름 해변 뮤직 페스타가 8월 11일부터 15일까지 속초해수욕장에서 열립니다.",
+    "createdAt": "2026-07-23T18:05:00",
+    "read": false,
+    "to": "/"
+  },
+  {
+    "id": "n-4",
+    "type": "trip",
+    "title": "강릉·속초 여행이 19일 남았어요",
+    "body": "숙소 근처 아침 식사 장소를 아직 안 담으셨어요. 지금 추가하면 일정에 넣어 드릴게요.",
+    "createdAt": "2026-07-23T10:00:00",
+    "read": true,
+    "to": "/plan/trip-2026-0812"
+  },
+  {
+    "id": "n-5",
+    "type": "recommend",
+    "title": "담아둔 곳 근처에 새로운 장소가 있어요",
+    "body": "안목해변에서 걸어서 10분 거리에 카페 2곳이 관광공사 데이터에 새로 등록됐습니다.",
+    "createdAt": "2026-07-21T14:30:00",
+    "read": true,
+    "to": "/explore"
+  },
+  {
+    "id": "n-6",
+    "type": "share",
+    "title": "친구가 일정을 공유했어요",
+    "body": "지영님이 '양양 서핑 2박 3일' 일정을 공유했습니다.",
+    "createdAt": "2026-07-20T20:11:00",
+    "read": true,
+    "to": "/trips"
+  },
+  {
+    "id": "n-7",
+    "type": "trip",
+    "title": "일정이 만들어졌어요",
+    "body": "강릉·속초 1박 2일 자차 여행 일정을 만들었습니다. 총 11곳, 이동 138.4km입니다.",
+    "createdAt": "2026-07-18T16:22:00",
+    "read": true,
+    "to": "/plan/trip-2026-0812"
+  }
+]

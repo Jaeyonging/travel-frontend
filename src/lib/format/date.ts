@@ -48,3 +48,33 @@ export function formatDday(date: string) {
   if (d === 0) return 'D-DAY'
   return d > 0 ? `D-${d}` : `D+${-d}`
 }
+
+/** 알림 목록용 상대 시간 (방금 전, 3시간 전, 어제 ...) */
+export function formatRelativeTime(value: string, now = new Date()): string {
+  const target = new Date(value)
+  const diffMs = now.getTime() - target.getTime()
+  const minutes = Math.floor(diffMs / 60_000)
+
+  if (minutes < 1) return '방금 전'
+  if (minutes < 60) return `${minutes}분 전`
+
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24 && target.getDate() === now.getDate()) return `${hours}시간 전`
+
+  const days = daysUntil(toDateOnly(value), now) * -1
+  if (days === 1) return '어제'
+  if (days < 7) return `${days}일 전`
+  return `${target.getMonth() + 1}월 ${target.getDate()}일`
+}
+
+function toDateOnly(value: string) {
+  return value.slice(0, 10)
+}
+
+/** 알림 묶음 제목 (오늘 / 어제 / 지난 알림) */
+export function relativeGroup(value: string, now = new Date()): string {
+  const days = daysUntil(toDateOnly(value), now) * -1
+  if (days <= 0) return '오늘'
+  if (days === 1) return '어제'
+  return '지난 알림'
+}

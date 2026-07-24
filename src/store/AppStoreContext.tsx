@@ -1,6 +1,21 @@
 import { createContext, useCallback, useMemo, useState, type ReactNode } from 'react'
-import { FESTIVALS, PLACES, REGIONS, SAMPLE_ITINERARY, SNS_CONTENTS } from '@/lib/api'
-import type { Festival, Itinerary, Place, Region, SnsContent, TripCondition } from '@/types'
+import {
+  FESTIVALS,
+  NOTIFICATIONS,
+  PLACES,
+  REGIONS,
+  SAMPLE_ITINERARY,
+  SNS_CONTENTS,
+} from '@/lib/api'
+import type {
+  AppNotification,
+  Festival,
+  Itinerary,
+  Place,
+  Region,
+  SnsContent,
+  TripCondition,
+} from '@/types'
 import { DEFAULT_CONDITION, INITIAL_ANALYZED_IDS, INITIAL_CANDIDATE_IDS } from './defaults'
 
 export interface AppStoreValue {
@@ -17,6 +32,8 @@ export interface AppStoreValue {
   analyzedIds: string[]
   condition: TripCondition
   excludedPlaceIds: string[]
+  notifications: AppNotification[]
+  unreadCount: number
 
   getPlace: (id: string) => Place | undefined
   isCandidate: (id: string) => boolean
@@ -26,6 +43,8 @@ export interface AppStoreValue {
   markAnalyzed: (id: string) => void
   setCondition: (condition: TripCondition) => void
   toggleExcluded: (id: string) => void
+  markNotificationRead: (id: string) => void
+  markAllNotificationsRead: () => void
 }
 
 export const AppStoreContext = createContext<AppStoreValue | null>(null)
@@ -35,6 +54,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [analyzedIds, setAnalyzedIds] = useState<string[]>(INITIAL_ANALYZED_IDS)
   const [condition, setCondition] = useState<TripCondition>(DEFAULT_CONDITION)
   const [excludedPlaceIds, setExcludedPlaceIds] = useState<string[]>([])
+  const [notifications, setNotifications] = useState<AppNotification[]>(NOTIFICATIONS)
 
   const placeMap = useMemo(() => new Map(PLACES.map((p) => [p.id, p])), [])
 
@@ -58,6 +78,16 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setAnalyzedIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
   }, [])
 
+  const markNotificationRead = useCallback((id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
+    )
+  }, [])
+
+  const markAllNotificationsRead = useCallback(() => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+  }, [])
+
   const toggleExcluded = useCallback((id: string) => {
     setExcludedPlaceIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
@@ -79,6 +109,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       analyzedIds,
       condition,
       excludedPlaceIds,
+      notifications,
+      unreadCount: notifications.filter((n) => !n.read).length,
 
       getPlace,
       isCandidate: (id) => candidateIds.includes(id),
@@ -88,12 +120,15 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       markAnalyzed,
       setCondition,
       toggleExcluded,
+      markNotificationRead,
+      markAllNotificationsRead,
     }),
     [
       candidateIds,
       analyzedIds,
       condition,
       excludedPlaceIds,
+      notifications,
       placeMap,
       getPlace,
       toggleCandidate,
@@ -101,6 +136,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       addCandidates,
       markAnalyzed,
       toggleExcluded,
+      markNotificationRead,
+      markAllNotificationsRead,
     ],
   )
 

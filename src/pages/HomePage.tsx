@@ -13,7 +13,7 @@ import {
 import { PlaceCard, PlaceDetailSheet } from '@/features/places'
 import { SnsContentRow } from '@/features/sns'
 import { TripCard } from '@/features/itinerary'
-import { useCandidates, useCatalog, useTrip } from '@/store'
+import { useCandidates, useCatalog, useNotifications, useTrip } from '@/store'
 import { ROUTES } from '@/app/routes'
 import type { Place } from '@/types'
 
@@ -24,6 +24,7 @@ export default function HomePage() {
   const { places, regions, festivals, snsContents } = useCatalog()
   const { candidates, isCandidate, toggleCandidate } = useCandidates()
   const { itinerary } = useTrip()
+  const { unreadCount } = useNotifications()
 
   const [detail, setDetail] = useState<Place | null>(null)
 
@@ -43,7 +44,11 @@ export default function HomePage() {
 
   return (
     <div>
-      <HomeHeader onSearch={() => navigate(ROUTES.explore)} />
+      <HomeHeader
+        onSearch={() => navigate(ROUTES.explore)}
+        onNotifications={() => navigate(ROUTES.notifications)}
+        unreadCount={unreadCount}
+      />
 
       <LinkInputCard
         samples={snsContents}

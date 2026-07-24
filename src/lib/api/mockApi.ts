@@ -3,7 +3,9 @@ import snsJson from '@/data/snsContents.json'
 import regionsJson from '@/data/regions.json'
 import festivalsJson from '@/data/festivals.json'
 import itineraryJson from '@/data/itinerary.json'
+import notificationsJson from '@/data/notifications.json'
 import type {
+  AppNotification,
   Festival,
   GenerateItineraryInput,
   GenerateItineraryResult,
@@ -21,6 +23,7 @@ export const SNS_CONTENTS = snsJson as SnsContent[]
 export const REGIONS = regionsJson as Region[]
 export const FESTIVALS = festivalsJson as Festival[]
 export const SAMPLE_ITINERARY = itineraryJson as Itinerary
+export const NOTIFICATIONS = notificationsJson as AppNotification[]
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 

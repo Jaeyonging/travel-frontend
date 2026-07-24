@@ -125,3 +125,25 @@ export interface TripCondition {
   themes: string[]
   pace: TripPace
 }
+
+export type NotificationType =
+  | 'analysis'
+  | 'verification'
+  | 'festival'
+  | 'trip'
+  | 'recommend'
+  | 'share'
+
+/** 앱 알림 (DOM의 Notification과 이름이 겹치지 않도록 접두어를 붙였습니다) */
+export interface AppNotification {
+  id: string
+  type: NotificationType
+  title: string
+  body: string
+  createdAt: string
+  read: boolean
+  /** 눌렀을 때 이동할 경로 */
+  to: string
+  /** 분석 알림에서 다시 열 SNS 링크 */
+  snsUrl?: string
+}

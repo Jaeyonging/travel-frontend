@@ -5,6 +5,7 @@ export const ROUTES = {
   saved: '/saved',
   trips: '/trips',
   my: '/my',
+  notifications: '/notifications',
   extractResult: '/extract/result',
   planNew: '/plan/new',
   plan: (id: string) => `/plan/${id}`,
