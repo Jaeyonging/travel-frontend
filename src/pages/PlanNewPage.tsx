@@ -19,7 +19,7 @@ export default function PlanNewPage() {
 
   const { candidates } = useCandidates()
   const { regions, getPlace } = useCatalog()
-  const { condition, setCondition } = useTrip()
+  const { condition, setCondition, addSavedTrip } = useTrip()
 
   // 특정 장소만 넘겨받으면 그 장소로 시작합니다 (분석 결과에서 바로 온 경우)
   const [selectedIds, setSelectedIds] = useState<string[]>(
@@ -36,9 +36,10 @@ export default function PlanNewPage() {
   const handleSuccess = useCallback(
     (itinerary: Itinerary) => {
       setCondition(draft)
+      addSavedTrip(itinerary.id)
       navigate(ROUTES.plan(itinerary.id), { replace: true })
     },
-    [draft, navigate, setCondition],
+    [draft, navigate, setCondition, addSavedTrip],
   )
 
   const generation = useItineraryGeneration(handleSuccess)
@@ -131,7 +132,7 @@ export default function PlanNewPage() {
       <div className="px-5 pb-4 pt-6">
         <p className="text-[11.5px] leading-relaxed text-ink-300">
           지역은 고른 장소를 기준으로 자동 판별해요{usedRegionNames && ` (${usedRegionNames})`}.
-          백엔드 연동 전이라 조건과 무관하게 준비된 목업 일정이 생성됩니다.
+          백엔드 연동 전이라 권역별로 준비된 목업 일정이 생성됩니다.
         </p>
       </div>
 

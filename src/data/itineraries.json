@@ -1,0 +1,520 @@
+[
+  {
+    "id": "trip-2026-0812",
+    "title": "강릉·속초 1박 2일 자차 여행",
+    "startDate": "2026-08-12",
+    "endDate": "2026-08-13",
+    "regionId": "east-coast",
+    "transport": "car",
+    "companion": "couple",
+    "themes": [
+      "카페",
+      "바다",
+      "맛집"
+    ],
+    "createdAt": "2026-07-22T14:30:00",
+    "summary": {
+      "totalPlaces": 11,
+      "totalDistanceKm": 138.4,
+      "totalMoveMinutes": 214,
+      "snsPlaceRatio": 0.64
+    },
+    "warnings": [
+      {
+        "level": "info",
+        "title": "울산바위 코스는 2일차에서 제외했습니다",
+        "detail": "왕복 4시간이 필요해 1박 2일 일정에서는 다른 장소 4곳이 밀려납니다. 설악산 소공원 + 권금성 케이블카로 대체 배치했습니다."
+      },
+      {
+        "level": "warn",
+        "title": "동해안권 내 이동만으로 구성했습니다",
+        "detail": "후보함에 있던 '남이섬(춘천)'은 권역이 달라 왕복 3시간 20분이 추가됩니다. 별도 일정으로 분리하는 것을 권장합니다."
+      }
+    ],
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-08-12",
+        "label": "강릉 카페 & 바다",
+        "items": [
+          {
+            "placeId": "p-chodang",
+            "startTime": "09:30",
+            "endTime": "10:30",
+            "slot": "meal",
+            "note": "아침 식사 — 순두부 정식",
+            "moveFromPrev": null
+          },
+          {
+            "placeId": "p-anmok",
+            "startTime": "11:00",
+            "endTime": "12:30",
+            "slot": "activity",
+            "note": "SNS에서 담은 커피거리, 해변 산책 포함",
+            "moveFromPrev": {
+              "distanceKm": 4.2,
+              "minutes": 14,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-jungang-market",
+            "startTime": "13:00",
+            "endTime": "14:10",
+            "slot": "meal",
+            "note": "점심 — 시장 먹거리 투어",
+            "moveFromPrev": {
+              "distanceKm": 5.6,
+              "minutes": 17,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-terarosa",
+            "startTime": "14:40",
+            "endTime": "15:50",
+            "slot": "activity",
+            "note": "실내 카페 — 오후 더위 회피 구간",
+            "moveFromPrev": {
+              "distanceKm": 8.9,
+              "minutes": 21,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-gyeongpo",
+            "startTime": "16:40",
+            "endTime": "17:40",
+            "slot": "activity",
+            "note": "일몰 30분 전 도착하도록 배치",
+            "moveFromPrev": {
+              "distanceKm": 12.4,
+              "minutes": 26,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-abai",
+            "startTime": "19:00",
+            "endTime": "20:10",
+            "slot": "meal",
+            "note": "저녁 — 아바이순대, 갯배 야간 운행",
+            "moveFromPrev": {
+              "distanceKm": 44.8,
+              "minutes": 58,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-stay-sokcho",
+            "startTime": "20:40",
+            "endTime": "",
+            "slot": "stay",
+            "note": "체크인 — 2일차 동선 시작점",
+            "moveFromPrev": {
+              "distanceKm": 2.6,
+              "minutes": 9,
+              "mode": "car"
+            }
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "date": "2026-08-13",
+        "label": "속초 바다 & 설악산",
+        "items": [
+          {
+            "placeId": "p-sokcho-beach",
+            "startTime": "08:00",
+            "endTime": "09:00",
+            "slot": "activity",
+            "note": "아침 해변 산책 (숙소 도보 5분)",
+            "moveFromPrev": {
+              "distanceKm": 0.4,
+              "minutes": 5,
+              "mode": "walk"
+            }
+          },
+          {
+            "placeId": "p-sokcho-market",
+            "startTime": "09:30",
+            "endTime": "10:30",
+            "slot": "meal",
+            "note": "아침 겸 간식 — 닭강정 포장",
+            "moveFromPrev": {
+              "distanceKm": 2.1,
+              "minutes": 8,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-seoraksan",
+            "startTime": "11:10",
+            "endTime": "14:10",
+            "slot": "activity",
+            "note": "권금성 케이블카 코스 (울산바위 대체)",
+            "moveFromPrev": {
+              "distanceKm": 12.8,
+              "minutes": 27,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-daepo",
+            "startTime": "14:50",
+            "endTime": "16:10",
+            "slot": "meal",
+            "note": "늦은 점심 — 회, 새우튀김",
+            "moveFromPrev": {
+              "distanceKm": 11.3,
+              "minutes": 24,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-oeongchi",
+            "startTime": "16:30",
+            "endTime": "17:20",
+            "slot": "activity",
+            "note": "마지막 해안 산책 후 귀가",
+            "moveFromPrev": {
+              "distanceKm": 1.4,
+              "minutes": 6,
+              "mode": "car"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "trip-chuncheon",
+    "title": "춘천 당일치기 자차 여행",
+    "startDate": "2026-09-05",
+    "endDate": "2026-09-05",
+    "regionId": "metro-near",
+    "transport": "car",
+    "companion": "friends",
+    "themes": [
+      "자연",
+      "맛집",
+      "산책"
+    ],
+    "createdAt": "2026-07-24T11:00:00",
+    "summary": {
+      "totalPlaces": 4,
+      "totalDistanceKm": 47.6,
+      "totalMoveMinutes": 55,
+      "snsPlaceRatio": 0.0
+    },
+    "warnings": [
+      {
+        "level": "info",
+        "title": "ITX로 오면 자차 없이도 됩니다",
+        "detail": "남이섬과 김유정문학촌은 기차역에서 가깝습니다. 대중교통 일정은 3단계에서 제공 예정이에요."
+      }
+    ],
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-09-05",
+        "label": "춘천 호수와 골목",
+        "items": [
+          {
+            "placeId": "p-namisum",
+            "startTime": "09:30",
+            "endTime": "12:30",
+            "slot": "activity",
+            "note": "배 타고 들어가는 섬 산책",
+            "moveFromPrev": null
+          },
+          {
+            "placeId": "p-dakgalbi",
+            "startTime": "13:00",
+            "endTime": "14:10",
+            "slot": "meal",
+            "note": "점심 — 철판 닭갈비와 볶음밥",
+            "moveFromPrev": {
+              "distanceKm": 26.5,
+              "minutes": 30,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-kimyujeong",
+            "startTime": "14:20",
+            "endTime": "15:20",
+            "slot": "activity",
+            "note": "기차역 이름이 된 문학 마을",
+            "moveFromPrev": {
+              "distanceKm": 10.4,
+              "minutes": 10,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-soyang-sky",
+            "startTime": "15:35",
+            "endTime": "16:25",
+            "slot": "activity",
+            "note": "해 지기 전 마지막 전망",
+            "moveFromPrev": {
+              "distanceKm": 10.7,
+              "minutes": 15,
+              "mode": "car"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "trip-mountain",
+    "title": "평창·정선 당일치기 자차 여행",
+    "startDate": "2026-10-17",
+    "endDate": "2026-10-17",
+    "regionId": "mountain",
+    "transport": "car",
+    "companion": "couple",
+    "themes": [
+      "자연",
+      "산책",
+      "시장"
+    ],
+    "createdAt": "2026-07-24T11:00:00",
+    "summary": {
+      "totalPlaces": 4,
+      "totalDistanceKm": 72.3,
+      "totalMoveMinutes": 85,
+      "snsPlaceRatio": 0.0
+    },
+    "warnings": [
+      {
+        "level": "warn",
+        "title": "정선 아리랑시장은 장날에만 붐빕니다",
+        "detail": "2일과 7일로 끝나는 날에 오일장이 열립니다. 다른 날은 상설 점포만 문을 엽니다."
+      },
+      {
+        "level": "info",
+        "title": "산길 구간이 있어 시간을 넉넉히 잡았습니다",
+        "detail": "월정사에서 정선까지는 고갯길이라 실제 소요 시간이 더 걸릴 수 있습니다."
+      }
+    ],
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-10-17",
+        "label": "고원 목장과 오일장",
+        "items": [
+          {
+            "placeId": "p-yangtte",
+            "startTime": "09:00",
+            "endTime": "10:30",
+            "slot": "activity",
+            "note": "능선을 따라 걷는 초원 산책",
+            "moveFromPrev": null
+          },
+          {
+            "placeId": "p-woljeongsa",
+            "startTime": "10:50",
+            "endTime": "12:20",
+            "slot": "activity",
+            "note": "전나무 숲길 걷기",
+            "moveFromPrev": {
+              "distanceKm": 18.2,
+              "minutes": 20,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-jeongseon-market",
+            "startTime": "13:20",
+            "endTime": "14:20",
+            "slot": "meal",
+            "note": "점심 — 곤드레밥과 메밀전병",
+            "moveFromPrev": {
+              "distanceKm": 51.2,
+              "minutes": 60,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-byeongbangchi",
+            "startTime": "14:25",
+            "endTime": "15:15",
+            "slot": "activity",
+            "note": "동강이 내려다보이는 절벽 전망",
+            "moveFromPrev": {
+              "distanceKm": 2.9,
+              "minutes": 5,
+              "mode": "car"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "trip-southcoast",
+    "title": "동해·삼척 당일치기 자차 여행",
+    "startDate": "2026-09-19",
+    "endDate": "2026-09-19",
+    "regionId": "south-coast",
+    "transport": "car",
+    "companion": "family",
+    "themes": [
+      "바다",
+      "맛집",
+      "자연"
+    ],
+    "createdAt": "2026-07-24T11:00:00",
+    "summary": {
+      "totalPlaces": 5,
+      "totalDistanceKm": 74.1,
+      "totalMoveMinutes": 95,
+      "snsPlaceRatio": 0.0
+    },
+    "warnings": [
+      {
+        "level": "info",
+        "title": "비가 와도 괜찮은 코스입니다",
+        "detail": "환선굴과 어시장은 실내라 우천 시에도 그대로 진행할 수 있습니다."
+      }
+    ],
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-09-19",
+        "label": "해안 절경과 동굴",
+        "items": [
+          {
+            "placeId": "p-mukho",
+            "startTime": "09:00",
+            "endTime": "10:10",
+            "slot": "activity",
+            "note": "등대까지 이어지는 벽화 골목",
+            "moveFromPrev": null
+          },
+          {
+            "placeId": "p-mukho-market",
+            "startTime": "10:15",
+            "endTime": "11:25",
+            "slot": "meal",
+            "note": "점심 — 물회와 곰치국",
+            "moveFromPrev": {
+              "distanceKm": 0.1,
+              "minutes": 5,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-chuam",
+            "startTime": "11:40",
+            "endTime": "12:30",
+            "slot": "activity",
+            "note": "바다에 솟은 촛대바위",
+            "moveFromPrev": {
+              "distanceKm": 12.3,
+              "minutes": 15,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-hwanseon",
+            "startTime": "13:10",
+            "endTime": "15:10",
+            "slot": "activity",
+            "note": "모노레일 타고 석회동굴 관람",
+            "moveFromPrev": {
+              "distanceKm": 33.1,
+              "minutes": 40,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-janghohang",
+            "startTime": "15:45",
+            "endTime": "17:15",
+            "slot": "activity",
+            "note": "맑은 물빛의 항구에서 마무리",
+            "moveFromPrev": {
+              "distanceKm": 28.6,
+              "minutes": 35,
+              "mode": "car"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "trip-dmz",
+    "title": "인제·양구 당일치기 자차 여행",
+    "startDate": "2026-11-07",
+    "endDate": "2026-11-07",
+    "regionId": "dmz",
+    "transport": "car",
+    "companion": "solo",
+    "themes": [
+      "자연",
+      "산책",
+      "맛집"
+    ],
+    "createdAt": "2026-07-24T11:00:00",
+    "summary": {
+      "totalPlaces": 3,
+      "totalDistanceKm": 64.3,
+      "totalMoveMinutes": 80,
+      "snsPlaceRatio": 0.0
+    },
+    "warnings": [
+      {
+        "level": "warn",
+        "title": "두타연은 출입 신청이 필요합니다",
+        "detail": "민통선 안쪽이라 방문 전 양구군에 미리 신청해야 합니다. 신분증도 챙겨 주세요."
+      }
+    ],
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-11-07",
+        "label": "자작나무숲과 청정 계곡",
+        "items": [
+          {
+            "placeId": "p-jajaknamu",
+            "startTime": "09:30",
+            "endTime": "12:00",
+            "slot": "activity",
+            "note": "입구에서 한 시간 걸어 올라가는 숲길",
+            "moveFromPrev": null
+          },
+          {
+            "placeId": "p-yongdae",
+            "startTime": "12:30",
+            "endTime": "13:30",
+            "slot": "meal",
+            "note": "점심 — 황태국과 황태구이",
+            "moveFromPrev": {
+              "distanceKm": 24.5,
+              "minutes": 30,
+              "mode": "car"
+            }
+          },
+          {
+            "placeId": "p-dutayeon",
+            "startTime": "14:20",
+            "endTime": "15:50",
+            "slot": "activity",
+            "note": "민통선 안쪽 계곡 산책",
+            "moveFromPrev": {
+              "distanceKm": 39.8,
+              "minutes": 50,
+              "mode": "car"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -2,7 +2,7 @@ import placesJson from '@/data/places.json'
 import snsJson from '@/data/snsContents.json'
 import regionsJson from '@/data/regions.json'
 import festivalsJson from '@/data/festivals.json'
-import itineraryJson from '@/data/itinerary.json'
+import itinerariesJson from '@/data/itineraries.json'
 import notificationsJson from '@/data/notifications.json'
 import type {
   AppNotification,
@@ -22,7 +22,9 @@ export const PLACES = placesJson as Place[]
 export const SNS_CONTENTS = snsJson as SnsContent[]
 export const REGIONS = regionsJson as Region[]
 export const FESTIVALS = festivalsJson as Festival[]
-export const SAMPLE_ITINERARY = itineraryJson as Itinerary
+export const ITINERARIES = itinerariesJson as Itinerary[]
+/** 기본으로 보여주는 여행 (MVP 권역) */
+export const SAMPLE_ITINERARY = ITINERARIES[0]
 export const NOTIFICATIONS = notificationsJson as AppNotification[]
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
@@ -50,6 +52,17 @@ function findContentByUrl(url: string): SnsContent {
     SNS_CONTENTS.find((c) => trimmed.includes(c.id)) ??
     SNS_CONTENTS[Math.abs(hash(trimmed)) % SNS_CONTENTS.length]
   )
+}
+
+/** 고른 장소가 가장 많이 속한 권역의 일정을 돌려줍니다 */
+function pickItineraryForPlaces(placeIds: string[]): Itinerary {
+  const counts = new Map<string, number>()
+  for (const id of placeIds) {
+    const region = PLACES.find((p) => p.id === id)?.regionId
+    if (region) counts.set(region, (counts.get(region) ?? 0) + 1)
+  }
+  const [topRegion] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0] ?? []
+  return ITINERARIES.find((it) => it.regionId === topRegion) ?? SAMPLE_ITINERARY
 }
 
 /**
@@ -87,7 +100,7 @@ export const api = {
         throw new ApiError('unknown', '장소를 2곳 이상 선택해 주세요.', { retryable: false })
       }
       return {
-        ...SAMPLE_ITINERARY,
+        ...pickItineraryForPlaces(input.placeIds),
         startDate: input.condition.startDate,
         endDate: input.condition.endDate,
         transport: input.condition.transport,

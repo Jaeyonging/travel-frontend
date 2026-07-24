@@ -1,6 +1,7 @@
 import { createContext, useCallback, useMemo, useState, type ReactNode } from 'react'
 import {
   FESTIVALS,
+  ITINERARIES,
   NOTIFICATIONS,
   PLACES,
   REGIONS,
@@ -24,6 +25,9 @@ export interface AppStoreValue {
   regions: Region[]
   festivals: Festival[]
   snsContents: SnsContent[]
+  /** 권역별로 준비된 일정 전부 */
+  itineraries: Itinerary[]
+  /** 홈과 MY에서 대표로 보여주는 여행 */
   itinerary: Itinerary
 
   /** 사용자 상태 */
@@ -34,8 +38,11 @@ export interface AppStoreValue {
   excludedPlaceIds: string[]
   notifications: AppNotification[]
   unreadCount: number
-  /** 사용자가 직접 바꾼 Day별 장소 순서 (placeId 배열) */
-  dayOrders: Record<number, string[]>
+  /** 저장한 여행 id 목록 */
+  savedTripIds: string[]
+  /** 사용자가 직접 바꾼 Day별 장소 순서. 키는 `${일정id}-${day}` */
+  dayOrders: Record<string, string[]>
+  getItinerary: (id: string) => Itinerary | undefined
 
   getPlace: (id: string) => Place | undefined
   isCandidate: (id: string) => boolean
@@ -47,8 +54,9 @@ export interface AppStoreValue {
   toggleExcluded: (id: string) => void
   markNotificationRead: (id: string) => void
   markAllNotificationsRead: () => void
-  setDayOrder: (day: number, placeIds: string[]) => void
-  resetDayOrder: (day: number) => void
+  setDayOrder: (key: string, placeIds: string[]) => void
+  resetDayOrder: (key: string) => void
+  addSavedTrip: (id: string) => void
 }
 
 export const AppStoreContext = createContext<AppStoreValue | null>(null)
@@ -59,7 +67,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [condition, setCondition] = useState<TripCondition>(DEFAULT_CONDITION)
   const [excludedPlaceIds, setExcludedPlaceIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<AppNotification[]>(NOTIFICATIONS)
-  const [dayOrders, setDayOrders] = useState<Record<number, string[]>>({})
+  const [dayOrders, setDayOrders] = useState<Record<string, string[]>>({})
+  const [savedTripIds, setSavedTripIds] = useState<string[]>([ITINERARIES[0].id])
 
   const placeMap = useMemo(() => new Map(PLACES.map((p) => [p.id, p])), [])
 
@@ -93,16 +102,20 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
   }, [])
 
-  const setDayOrder = useCallback((day: number, placeIds: string[]) => {
-    setDayOrders((prev) => ({ ...prev, [day]: placeIds }))
+  const setDayOrder = useCallback((key: string, placeIds: string[]) => {
+    setDayOrders((prev) => ({ ...prev, [key]: placeIds }))
   }, [])
 
-  const resetDayOrder = useCallback((day: number) => {
+  const resetDayOrder = useCallback((key: string) => {
     setDayOrders((prev) => {
       const next = { ...prev }
-      delete next[day]
+      delete next[key]
       return next
     })
+  }, [])
+
+  const addSavedTrip = useCallback((id: string) => {
+    setSavedTripIds((prev) => (prev.includes(id) ? prev : [id, ...prev]))
   }, [])
 
   const toggleExcluded = useCallback((id: string) => {
@@ -117,6 +130,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       regions: REGIONS,
       festivals: FESTIVALS,
       snsContents: SNS_CONTENTS,
+      itineraries: ITINERARIES,
       itinerary: SAMPLE_ITINERARY,
 
       candidateIds,
@@ -128,7 +142,9 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       excludedPlaceIds,
       notifications,
       unreadCount: notifications.filter((n) => !n.read).length,
+      savedTripIds,
       dayOrders,
+      getItinerary: (id) => ITINERARIES.find((it) => it.id === id),
 
       getPlace,
       isCandidate: (id) => candidateIds.includes(id),
@@ -142,6 +158,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       markAllNotificationsRead,
       setDayOrder,
       resetDayOrder,
+      addSavedTrip,
     }),
     [
       candidateIds,
@@ -149,6 +166,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       condition,
       excludedPlaceIds,
       notifications,
+      savedTripIds,
       dayOrders,
       placeMap,
       getPlace,
@@ -161,6 +179,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       markAllNotificationsRead,
       setDayOrder,
       resetDayOrder,
+      addSavedTrip,
     ],
   )
 

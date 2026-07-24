@@ -25,5 +25,32 @@
     "place": "서피비치 일원",
     "image": "surfyy",
     "matchedDate": true
+  },
+  {
+    "id": "f-4",
+    "title": "화천 산천어축제",
+    "city": "화천",
+    "period": "2027-01-09 ~ 2027-01-31",
+    "place": "화천천 일원",
+    "image": "sancheoneo",
+    "matchedDate": false
+  },
+  {
+    "id": "f-5",
+    "title": "정선 아리랑제",
+    "city": "정선",
+    "period": "2026-10-01 ~ 2026-10-04",
+    "place": "정선읍 아라리공원",
+    "image": "jeongseon",
+    "matchedDate": false
+  },
+  {
+    "id": "f-6",
+    "title": "태백산 눈축제",
+    "city": "태백",
+    "period": "2027-01-22 ~ 2027-02-01",
+    "place": "태백산 국립공원",
+    "image": "maebong",
+    "matchedDate": false
   }
 ]

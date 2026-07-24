@@ -17,47 +17,51 @@ const TIPS = [
 
 export default function TripsPage() {
   const navigate = useNavigate()
-  const { itinerary } = useTrip()
+  const { getItinerary, savedTripIds } = useTrip()
   const { getPlace } = useCatalog()
   const { candidates } = useCandidates()
 
-  const previewPlaces = itinerary.days
-    .flatMap((day) => day.items)
-    .slice(0, 7)
-    .map((item) => getPlace(item.placeId))
-    .filter(Boolean)
+  const savedTrips = savedTripIds
+    .map((id) => getItinerary(id))
+    .filter((t): t is NonNullable<typeof t> => Boolean(t))
 
   return (
     <div className="pb-8">
       <TopBar title="내 일정" />
 
-      <div className="px-5 pt-4">
-        <div className="overflow-hidden rounded-2xl border border-ink-100">
-          <TripCard itinerary={itinerary} onOpen={() => navigate(ROUTES.plan(itinerary.id))} />
-          <div className="p-4">
-            <p className="text-[12.5px] font-semibold text-ink-700">
-              {formatDateRange(itinerary.startDate, itinerary.endDate)}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-ink-500">
-              <span>장소 {itinerary.summary.totalPlaces}곳</span>
-              <span>이동 {formatKm(itinerary.summary.totalDistanceKm)}</span>
-              <span>SNS 반영 {formatPercent(itinerary.summary.snsPlaceRatio)}</span>
-            </div>
-            <div className="mt-3 flex -space-x-2">
-              {previewPlaces.map(
-                (place) =>
-                  place && (
-                    <Photo
-                      key={place.id}
-                      seed={place.id}
-                      kind={sceneOfPlace(place)}
-                      className="h-8 w-8 rounded-full ring-2 ring-white"
-                    />
-                  ),
-              )}
+      <div className="space-y-3 px-5 pt-4">
+        {savedTrips.map((trip) => (
+          <div key={trip.id} className="overflow-hidden rounded-2xl bg-ink-50">
+            <TripCard itinerary={trip} onOpen={() => navigate(ROUTES.plan(trip.id))} />
+            <div className="p-4">
+              <p className="text-[12.5px] font-semibold text-ink-700">
+                {formatDateRange(trip.startDate, trip.endDate)}
+              </p>
+              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-ink-500">
+                <span>장소 {trip.summary.totalPlaces}곳</span>
+                <span>이동 {formatKm(trip.summary.totalDistanceKm)}</span>
+                <span>SNS 반영 {formatPercent(trip.summary.snsPlaceRatio)}</span>
+              </div>
+              <div className="mt-3 flex -space-x-2">
+                {trip.days
+                  .flatMap((day) => day.items)
+                  .slice(0, 7)
+                  .map((item) => getPlace(item.placeId))
+                  .map(
+                    (place) =>
+                      place && (
+                        <Photo
+                          key={place.id}
+                          seed={place.id}
+                          kind={sceneOfPlace(place)}
+                          className="h-8 w-8 rounded-full ring-2 ring-white"
+                        />
+                      ),
+                  )}
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
 
       <div className="px-5 pt-4">
@@ -90,7 +94,7 @@ export default function TripsPage() {
       </section>
 
       <section className="mt-8 px-5">
-        <div className="rounded-2xl border border-ink-100 p-4">
+        <div className="rounded-2xl bg-ink-50 p-4">
           <p className="text-[13px] font-extrabold">일정을 더 잘 만드는 법</p>
           <ul className="mt-2.5 space-y-2 text-[12.5px] leading-relaxed text-ink-500">
             {TIPS.map((tip) => (
@@ -101,7 +105,7 @@ export default function TripsPage() {
             ))}
           </ul>
           <Button
-            variant="soft"
+            variant="outline"
             size="md"
             full
             className="mt-3"

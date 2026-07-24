@@ -8,5 +8,6 @@ export {
   REGIONS,
   FESTIVALS,
   SAMPLE_ITINERARY,
+  ITINERARIES,
   NOTIFICATIONS,
 } from './mockApi'

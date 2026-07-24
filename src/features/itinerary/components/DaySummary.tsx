@@ -9,6 +9,8 @@ export interface DaySummaryProps {
   stats: DayStats
   reordering: boolean
   onToggleReorder: () => void
+  /** 여러 날짜짜리 일정인지 (하루짜리면 DAY 표기를 생략합니다) */
+  multiDay?: boolean
 }
 
 interface Cell {
@@ -25,6 +27,7 @@ export default function DaySummary({
   stats,
   reordering,
   onToggleReorder,
+  multiDay = true,
 }: DaySummaryProps) {
   const cells: Cell[] = [
     { label: '들르는 곳', value: `${stats.placeCount}곳`, icon: 'pin', tone: 'stay' },
@@ -38,7 +41,7 @@ export default function DaySummary({
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[11.5px] font-bold text-ink-300">
-            DAY {day.day} · 이 날 하루만
+            {multiDay ? `DAY ${day.day} · 이 날 하루만` : '일정 요약'}
           </p>
           <h2 className="mt-0.5 truncate text-[18px] font-extrabold tracking-tight">
             {day.label}

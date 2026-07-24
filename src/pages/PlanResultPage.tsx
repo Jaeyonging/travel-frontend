@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Icon from '@/components/icon'
 import MockMap from '@/components/map'
 import { Button, Sheet, StatRow } from '@/components/ui'
@@ -31,19 +31,32 @@ export default function PlanResultPage() {
   const navigate = useNavigate()
   const toast = useToast()
 
+  const { id } = useParams<{ id: string }>()
   const { places, getPlace } = useCatalog()
-  const { itinerary, excludedPlaceIds, toggleExcluded, dayOrders, setDayOrder, resetDayOrder } =
-    useTrip()
+  const {
+    itinerary: defaultItinerary,
+    getItinerary,
+    excludedPlaceIds,
+    toggleExcluded,
+    dayOrders,
+    setDayOrder,
+    resetDayOrder,
+  } = useTrip()
+
+  // 주소의 id로 해당 일정을 찾습니다. 없으면 대표 일정을 보여줍니다.
+  const itinerary = (id ? getItinerary(id) : undefined) ?? defaultItinerary
 
   const [dayIndex, setDayIndex] = useState(0)
   const [detail, setDetail] = useState<Place | null>(null)
   const [mapOpen, setMapOpen] = useState(false)
   const [reordering, setReordering] = useState(false)
 
-  const day = itinerary.days[dayIndex]
+  const isMultiDay = itinerary.days.length > 1
+  const day = itinerary.days[Math.min(dayIndex, itinerary.days.length - 1)]
   const dayColor = DAY_COLORS[dayIndex % DAY_COLORS.length]
 
-  const customOrder = dayOrders[day.day]
+  const orderKey = `${itinerary.id}-${day.day}`
+  const customOrder = dayOrders[orderKey]
 
   // 제외한 장소를 빼고, 사용자가 바꾼 순서를 적용한 뒤, 시각과 이동 시간을 다시 계산합니다
   const items = useMemo(() => {
@@ -74,33 +87,37 @@ export default function PlanResultPage() {
 
   const handleReorder = (from: number, to: number) => {
     const ids = moveItem(items.map((item) => item.placeId), from, to)
-    setDayOrder(day.day, ids)
+    setDayOrder(orderKey, ids)
   }
 
   return (
     <div className="pb-2">
       <TripHero itinerary={itinerary} onShare={share} />
 
-      <div className="px-5 pb-4 pt-5">
-        <p className="mb-2 text-[11.5px] font-bold text-ink-300">
-          여행 전체 · DAY 1 + DAY 2 합계
-        </p>
-        <StatRow
-          stats={[
-            { label: '들르는 곳', value: `${itinerary.summary.totalPlaces}곳` },
-            { label: '이동 거리', value: formatKm(itinerary.summary.totalDistanceKm) },
-            { label: '이동 시간', value: formatMinutes(itinerary.summary.totalMoveMinutes) },
-            { label: 'SNS 반영', value: formatPercent(itinerary.summary.snsPlaceRatio) },
-          ]}
-        />
-      </div>
+      {isMultiDay && (
+        <div className="px-5 pb-4 pt-5">
+          <p className="mb-2 text-[11.5px] font-bold text-ink-300">
+            여행 전체 · DAY 1 ~ DAY {itinerary.days.length} 합계
+          </p>
+          <StatRow
+            stats={[
+              { label: '들르는 곳', value: `${itinerary.summary.totalPlaces}곳` },
+              { label: '이동 거리', value: formatKm(itinerary.summary.totalDistanceKm) },
+              { label: '이동 시간', value: formatMinutes(itinerary.summary.totalMoveMinutes) },
+              { label: 'SNS 반영', value: formatPercent(itinerary.summary.snsPlaceRatio) },
+            ]}
+          />
+        </div>
+      )}
 
       <ItineraryWarnings
         warnings={itinerary.warnings}
         onSplit={() => toast('권역별 일정 분리는 준비 중이에요', 'default')}
       />
 
-      <DayTabs days={itinerary.days} activeIndex={dayIndex} onChange={setDayIndex} />
+      {isMultiDay && (
+        <DayTabs days={itinerary.days} activeIndex={dayIndex} onChange={setDayIndex} />
+      )}
 
       <button type="button" onClick={() => setMapOpen(true)} className="relative block w-full">
         <MockMap markers={markers} route height={180} showLabels={false} />
@@ -112,6 +129,7 @@ export default function PlanResultPage() {
       <DaySummary
         day={day}
         stats={stats}
+        multiDay={isMultiDay}
         reordering={reordering}
         onToggleReorder={() => setReordering((v) => !v)}
       />
@@ -125,7 +143,7 @@ export default function PlanResultPage() {
           <button
             type="button"
             onClick={() => {
-              resetDayOrder(day.day)
+              resetDayOrder(orderKey)
               toast('AI 추천 순서로 되돌렸어요')
             }}
             className="pressable shrink-0 whitespace-nowrap rounded-lg bg-white px-2.5 py-1.5 text-[11.5px] font-extrabold text-ink-700"

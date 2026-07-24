@@ -35,7 +35,7 @@ export default function RegionCarousel({
             </div>
             {region.id === 'east-coast' && (
               <span className="absolute right-2 top-2 rounded-md bg-brand-500 px-1.5 py-0.5 text-[9.5px] font-bold text-white">
-                지금 이용 가능
+                일정 생성 지원
               </span>
             )}
           </Photo>

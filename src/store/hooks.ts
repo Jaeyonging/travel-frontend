@@ -23,7 +23,11 @@ export function useCatalog() {
 /** 일정 관련 셀렉터 */
 export function useTrip() {
   const {
+    itineraries,
     itinerary,
+    getItinerary,
+    savedTripIds,
+    addSavedTrip,
     condition,
     setCondition,
     excludedPlaceIds,
@@ -34,7 +38,11 @@ export function useTrip() {
     resetDayOrder,
   } = useStore()
   return {
+    itineraries,
     itinerary,
+    getItinerary,
+    savedTripIds,
+    addSavedTrip,
     condition,
     setCondition,
     excludedPlaceIds,
