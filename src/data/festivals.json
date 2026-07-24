@@ -1,0 +1,29 @@
+[
+  {
+    "id": "f-1",
+    "title": "강릉커피축제",
+    "city": "강릉",
+    "period": "2026-10-08 ~ 2026-10-12",
+    "place": "강릉아레나 일원",
+    "image": "anmok",
+    "matchedDate": false
+  },
+  {
+    "id": "f-2",
+    "title": "속초 여름 해변 뮤직 페스타",
+    "city": "속초",
+    "period": "2026-08-11 ~ 2026-08-15",
+    "place": "속초해수욕장 특설무대",
+    "image": "sokcho-beach",
+    "matchedDate": true
+  },
+  {
+    "id": "f-3",
+    "title": "양양 서핑 페스티벌",
+    "city": "양양",
+    "period": "2026-08-01 ~ 2026-08-20",
+    "place": "서피비치 일원",
+    "image": "surfyy",
+    "matchedDate": true
+  }
+]

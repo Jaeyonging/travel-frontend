@@ -1,0 +1,61 @@
+# 의존성
+node_modules/
+.pnp
+.pnp.js
+
+# 빌드 결과물
+dist/
+dist-ssr/
+build/
+
+# 환경 변수 (API 키) — .env.example만 커밋합니다
+.env
+.env.*
+!.env.example
+*.local
+
+# 로그
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 캐시 / 임시 파일
+.vite/
+.cache/
+.temp/
+.tmp/
+*.tsbuildinfo
+.eslintcache
+
+# 테스트 커버리지
+coverage/
+*.lcov
+
+# 에디터 / IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Claude Code 로컬 설정 (권한 등 개인 설정)
+.claude/settings.local.json
+
+# 배포 도구
+.vercel
+.netlify

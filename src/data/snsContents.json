@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sns-1",
+    "platform": "youtube",
+    "url": "https://www.youtube.com/shorts/gangneung-cafe-street",
+    "title": "강릉 왔으면 여긴 무조건 가야함 🌊 안목해변 커피거리 + 초당순두부",
+    "channel": "여행하는지영",
+    "thumbnail": "anmok",
+    "publishedAt": "2026-05-12",
+    "views": 412000,
+    "hashtags": ["#강릉여행", "#안목해변", "#초당순두부", "#카페거리"],
+    "analyzedAt": "2026-07-20T10:12:00",
+    "extractedPlaceIds": ["p-anmok", "p-chodang"],
+    "signals": ["영상 제목", "설명란", "자막 00:14", "해시태그"]
+  },
+  {
+    "id": "sns-2",
+    "platform": "instagram",
+    "url": "https://www.instagram.com/reel/gangneung-coffee-day",
+    "title": "강릉 커피 투어 하루 코스 ☕️ 중앙시장 닭강정까지",
+    "channel": "@travel.dayoff",
+    "thumbnail": "terarosa",
+    "publishedAt": "2026-06-02",
+    "views": 158000,
+    "hashtags": ["#강릉", "#테라로사", "#강릉중앙시장", "#서피비치"],
+    "analyzedAt": "2026-07-20T10:13:00",
+    "extractedPlaceIds": ["p-terarosa", "p-jungang-market", "p-surfyy"],
+    "signals": ["캡션", "해시태그", "위치 태그"]
+  },
+  {
+    "id": "sns-3",
+    "platform": "instagram",
+    "url": "https://www.instagram.com/reel/sokcho-night-walk",
+    "title": "속초 야경 산책 코스 🌙 아바이마을 갯배 타고",
+    "channel": "@sokcho_daily",
+    "thumbnail": "sokcho-beach",
+    "publishedAt": "2026-06-21",
+    "views": 96400,
+    "hashtags": ["#속초여행", "#아바이마을", "#속초해수욕장", "#외옹치"],
+    "analyzedAt": "2026-07-21T09:02:00",
+    "extractedPlaceIds": ["p-sokcho-beach", "p-abai", "p-oeongchi"],
+    "signals": ["캡션", "위치 태그", "댓글 언급"]
+  },
+  {
+    "id": "sns-4",
+    "platform": "youtube",
+    "url": "https://www.youtube.com/watch?v=seoraksan-autumn",
+    "title": "설악산 당일치기 완벽 정리 (울산바위까지 다녀옴)",
+    "channel": "산타는형",
+    "thumbnail": "seoraksan",
+    "publishedAt": "2026-07-01",
+    "views": 733000,
+    "hashtags": ["#설악산", "#울산바위", "#등산코스"],
+    "analyzedAt": "2026-07-21T09:05:00",
+    "extractedPlaceIds": ["p-seoraksan", "p-ulsanbawi"],
+    "signals": ["영상 제목", "자막 02:31", "설명란"]
+  }
+]

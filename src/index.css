@@ -1,0 +1,86 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-ink-100 font-sans text-ink-900;
+    overscroll-behavior-y: none;
+  }
+  ::selection {
+    @apply bg-brand-100;
+  }
+  input,
+  select,
+  textarea,
+  button {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  /* 누를 때 살짝 눌리는 반응 — 앱 터치 피드백 */
+  .pressable {
+    transition:
+      transform 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.16s ease;
+  }
+  .pressable:active {
+    transform: scale(0.972);
+    opacity: 0.92;
+  }
+  .pressable-sm:active {
+    transform: scale(0.94);
+  }
+}
+
+@layer utilities {
+  /* 전환 중 텍스트 깜빡임 방지 */
+  .gpu {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .edge-fade {
+    -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+  }
+}
+
+/* 모션 최소화를 선호하는 사용자 존중 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
