@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import Icon from '@/components/icon'
-import { Chip } from '@/components/ui'
+import { Chip, DateRangeSheet } from '@/components/ui'
 import { cn } from '@/lib/cn'
 import { COMPANION_OPTIONS, PACE_OPTIONS, THEME_OPTIONS, TRANSPORT_OPTIONS } from '@/lib/constants'
-import { nightsBetween } from '@/lib/format'
+import { formatDateRangeShort, nightsBetween } from '@/lib/format'
 import type { TripCondition } from '@/types'
 
 export interface TripConditionFormProps {
@@ -13,6 +13,7 @@ export interface TripConditionFormProps {
 
 /** 일정 생성 조건 입력 폼 (한 화면에 모두 노출) */
 export default function TripConditionForm({ value, onChange }: TripConditionFormProps) {
+  const [calendarOpen, setCalendarOpen] = useState(false)
   const patch = (partial: Partial<TripCondition>) => onChange({ ...value, ...partial })
   const nights = nightsBetween(value.startDate, value.endDate)
 
@@ -26,23 +27,33 @@ export default function TripConditionForm({ value, onChange }: TripConditionForm
   return (
     <>
       <Block title="언제 가시나요?">
-        <div className="flex items-center gap-2">
-          <DateInput
-            value={value.startDate}
-            onChange={(v) => patch({ startDate: v })}
-            label="출발일"
-          />
-          <span className="text-ink-300">–</span>
-          <DateInput
-            value={value.endDate}
-            onChange={(v) => patch({ endDate: v })}
-            label="도착일"
-          />
-          <span className="shrink-0 whitespace-nowrap rounded-lg bg-ink-50 px-2.5 py-1.5 text-[12.5px] font-bold text-ink-700">
+        <button
+          type="button"
+          onClick={() => setCalendarOpen(true)}
+          className="pressable flex w-full items-center gap-3 rounded-2xl border border-ink-200 px-4 py-3.5 text-left active:bg-ink-50"
+        >
+          <Icon name="clock" size={18} className="shrink-0 text-brand-500" />
+          <span className="min-w-0 flex-1">
+            <span className="block text-[14px] font-extrabold tracking-tight">
+              {formatDateRangeShort(value.startDate, value.endDate)}
+            </span>
+            <span className="mt-0.5 block text-[11.5px] text-ink-500">
+              눌러서 달력에서 고르기
+            </span>
+          </span>
+          <span className="shrink-0 whitespace-nowrap rounded-lg bg-brand-50 px-2.5 py-1.5 text-[12px] font-extrabold text-brand-600">
             {nights}박 {nights + 1}일
           </span>
-        </div>
+        </button>
       </Block>
+
+      <DateRangeSheet
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+        startDate={value.startDate}
+        endDate={value.endDate}
+        onApply={(startDate, endDate) => patch({ startDate, endDate })}
+      />
 
       <Block title="어떻게 이동하세요?">
         <div className="flex gap-2">
@@ -143,25 +154,5 @@ function Block({
       {desc && <p className="mt-1 text-[12px] text-ink-500">{desc}</p>}
       <div className="mt-3">{children}</div>
     </section>
-  )
-}
-
-function DateInput({
-  value,
-  onChange,
-  label,
-}: {
-  value: string
-  onChange: (v: string) => void
-  label: string
-}) {
-  return (
-    <input
-      type="date"
-      aria-label={label}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="h-11 w-full min-w-0 flex-1 rounded-xl border border-ink-200 px-2.5 text-[13px] font-semibold outline-none focus:border-brand-400"
-    />
   )
 }

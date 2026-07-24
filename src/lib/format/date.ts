@@ -13,6 +13,15 @@ export function formatDateRange(start: string, end: string) {
   return `${f(s)} – ${f(e)} · ${nights}박 ${nights + 1}일`
 }
 
+/** 박수 없이 날짜만 (8.12(수) ~ 8.13(목)) */
+export function formatDateRangeShort(start: string, end: string) {
+  const f = (value: string) => {
+    const d = new Date(value)
+    return `${d.getMonth() + 1}.${d.getDate()}(${DAY_NAMES[d.getDay()]})`
+  }
+  return `${f(start)} ~ ${f(end)}`
+}
+
 export function nightsBetween(start: string, end: string) {
   const diff = new Date(end).getTime() - new Date(start).getTime()
   if (Number.isNaN(diff)) return 0
