@@ -121,7 +121,7 @@ export default function PlanResultPage() {
         onAdd={() => toast('일정 재구성은 백엔드 연동 후 제공돼요', 'default')}
       />
 
-      <div className="sticky bottom-[62px] z-30 flex gap-2 border-t border-ink-100 bg-white/95 px-5 py-3 backdrop-blur">
+      <div className="sticky bottom-[68px] z-30 flex gap-2 border-t border-ink-100 bg-white/95 px-5 py-3 backdrop-blur">
         <Button
           variant="outline"
           size="lg"

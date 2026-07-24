@@ -24,7 +24,7 @@ export default function AppShell() {
 
         <PageTransition
           pathname={pathname}
-          className={cn('flex-1', fullscreen ? 'pb-6' : 'pb-[76px]')}
+          className={cn('flex-1', fullscreen ? 'pb-6' : 'pb-[82px]')}
         >
           <ErrorBoundary resetKey={pathname}>
             <Outlet />

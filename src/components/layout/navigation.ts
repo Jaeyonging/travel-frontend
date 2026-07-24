@@ -4,12 +4,15 @@ export interface TabItem {
   to: string
   label: string
   icon: IconName
+  /** 가운데에 강조해서 배치할 탭 */
+  primary?: boolean
 }
 
+/** 홈이 가운데 오도록 배치한 순서 */
 export const TABS: TabItem[] = [
-  { to: '/', label: '홈', icon: 'home' },
   { to: '/explore', label: '탐색', icon: 'compass' },
   { to: '/saved', label: '담은 곳', icon: 'bookmark' },
+  { to: '/', label: '홈', icon: 'home', primary: true },
   { to: '/trips', label: '내 일정', icon: 'route' },
   { to: '/my', label: 'MY', icon: 'user' },
 ]

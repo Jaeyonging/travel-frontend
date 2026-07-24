@@ -171,7 +171,7 @@ export default function SavedPage() {
         </button>
       </div>
 
-      <div className="sticky bottom-[62px] z-30 border-t border-ink-100 bg-white/95 px-5 py-3 backdrop-blur">
+      <div className="sticky bottom-[68px] z-30 border-t border-ink-100 bg-white/95 px-5 py-3 backdrop-blur">
         <Button
           size="lg"
           full
