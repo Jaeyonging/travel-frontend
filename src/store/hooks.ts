@@ -22,9 +22,28 @@ export function useCatalog() {
 
 /** 일정 관련 셀렉터 */
 export function useTrip() {
-  const { itinerary, condition, setCondition, excludedPlaceIds, toggleExcluded, getPlace } =
-    useStore()
-  return { itinerary, condition, setCondition, excludedPlaceIds, toggleExcluded, getPlace }
+  const {
+    itinerary,
+    condition,
+    setCondition,
+    excludedPlaceIds,
+    toggleExcluded,
+    getPlace,
+    dayOrders,
+    setDayOrder,
+    resetDayOrder,
+  } = useStore()
+  return {
+    itinerary,
+    condition,
+    setCondition,
+    excludedPlaceIds,
+    toggleExcluded,
+    getPlace,
+    dayOrders,
+    setDayOrder,
+    resetDayOrder,
+  }
 }
 
 /** 알림 셀렉터 */

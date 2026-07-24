@@ -1,17 +1,23 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Icon from '@/components/icon'
 import MockMap from '@/components/map'
 import { Button, Sheet, StatRow } from '@/components/ui'
 import { useToast } from '@/components/feedback'
 import {
   AlternativePlaces,
+  DayReorderList,
+  DaySummary,
   DayTabs,
   ExcludedPlaces,
   ItineraryWarnings,
   MoveBadge,
   TimelineItem,
   TripHero,
+  applyOrder,
   findAlternatives,
+  moveItem,
+  recalculateSchedule,
   summarizeDay,
 } from '@/features/itinerary'
 import { PlaceDetailSheet } from '@/features/places'
@@ -26,17 +32,27 @@ export default function PlanResultPage() {
   const toast = useToast()
 
   const { places, getPlace } = useCatalog()
-  const { itinerary, excludedPlaceIds, toggleExcluded } = useTrip()
+  const { itinerary, excludedPlaceIds, toggleExcluded, dayOrders, setDayOrder, resetDayOrder } =
+    useTrip()
 
   const [dayIndex, setDayIndex] = useState(0)
   const [detail, setDetail] = useState<Place | null>(null)
   const [mapOpen, setMapOpen] = useState(false)
+  const [reordering, setReordering] = useState(false)
 
   const day = itinerary.days[dayIndex]
   const dayColor = DAY_COLORS[dayIndex % DAY_COLORS.length]
 
-  const items = day.items.filter((item) => !excludedPlaceIds.includes(item.placeId))
-  const stats = useMemo(() => summarizeDay(items), [items])
+  const customOrder = dayOrders[day.day]
+
+  // 제외한 장소를 빼고, 사용자가 바꾼 순서를 적용한 뒤, 시각과 이동 시간을 다시 계산합니다
+  const items = useMemo(() => {
+    const visible = day.items.filter((item) => !excludedPlaceIds.includes(item.placeId))
+    const ordered = applyOrder(visible, customOrder)
+    return customOrder ? recalculateSchedule(ordered, getPlace) : ordered
+  }, [day, excludedPlaceIds, customOrder, getPlace])
+
+  const stats = useMemo(() => summarizeDay(items, getPlace), [items, getPlace])
 
   const markers = items.map((item, i) => ({
     place: getPlace(item.placeId)!,
@@ -56,16 +72,24 @@ export default function PlanResultPage() {
 
   const share = () => toast('공유 링크를 복사했어요 (목업)')
 
+  const handleReorder = (from: number, to: number) => {
+    const ids = moveItem(items.map((item) => item.placeId), from, to)
+    setDayOrder(day.day, ids)
+  }
+
   return (
     <div className="pb-2">
       <TripHero itinerary={itinerary} onShare={share} />
 
-      <div className="px-5 py-4">
+      <div className="px-5 pb-4 pt-5">
+        <p className="mb-2 text-[11.5px] font-bold text-ink-300">
+          여행 전체 · DAY 1 + DAY 2 합계
+        </p>
         <StatRow
           stats={[
-            { label: '장소', value: `${itinerary.summary.totalPlaces}곳` },
-            { label: '이동', value: formatKm(itinerary.summary.totalDistanceKm) },
-            { label: '이동시간', value: formatMinutes(itinerary.summary.totalMoveMinutes) },
+            { label: '들르는 곳', value: `${itinerary.summary.totalPlaces}곳` },
+            { label: '이동 거리', value: formatKm(itinerary.summary.totalDistanceKm) },
+            { label: '이동 시간', value: formatMinutes(itinerary.summary.totalMoveMinutes) },
             { label: 'SNS 반영', value: formatPercent(itinerary.summary.snsPlaceRatio) },
           ]}
         />
@@ -85,14 +109,43 @@ export default function PlanResultPage() {
         </span>
       </button>
 
-      <div className="flex items-center gap-3 px-5 pb-1 pt-4 text-[12px] text-ink-500">
-        <span className="font-extrabold text-ink-900">{day.label}</span>
-        <span>장소 {stats.placeCount}곳</span>
-        <span>
-          이동 {formatKm(stats.distanceKm)} · {formatMinutes(stats.moveMinutes)}
-        </span>
-      </div>
+      <DaySummary
+        day={day}
+        stats={stats}
+        reordering={reordering}
+        onToggleReorder={() => setReordering((v) => !v)}
+      />
 
+      {customOrder && (
+        <div className="mx-5 mt-3 flex items-center gap-2 rounded-xl bg-sand-100 px-3 py-2.5">
+          <Icon name="alert" size={14} className="shrink-0 text-sand-700" />
+          <p className="min-w-0 flex-1 text-[11.5px] leading-relaxed text-sand-700">
+            순서를 직접 바꿔서 이동 시간을 다시 계산했어요
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              resetDayOrder(day.day)
+              toast('AI 추천 순서로 되돌렸어요')
+            }}
+            className="pressable shrink-0 whitespace-nowrap rounded-lg bg-white px-2.5 py-1.5 text-[11.5px] font-extrabold text-ink-700"
+          >
+            되돌리기
+          </button>
+        </div>
+      )}
+
+      {reordering ? (
+        <div className="pt-3">
+          <p className="px-5 pb-2 text-[11.5px] text-ink-500">
+            오른쪽 손잡이를 끌어서 순서를 바꾸세요. 놓으면 이동 시간이 다시 계산됩니다.
+          </p>
+          <DayReorderList
+            places={items.map((item) => getPlace(item.placeId)!)}
+            onReorder={handleReorder}
+          />
+        </div>
+      ) : (
       <ol className="px-5">
         {items.map((item, i) => {
           const place = getPlace(item.placeId)!
@@ -114,6 +167,7 @@ export default function PlanResultPage() {
           )
         })}
       </ol>
+      )}
 
       <ExcludedPlaces places={excludedPlaces} onRestore={toggleExcluded} />
       <AlternativePlaces

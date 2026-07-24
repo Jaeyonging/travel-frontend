@@ -25,6 +25,7 @@ export type IconName =
   | 'bell'
   | 'trash'
   | 'shield'
+  | 'grip'
 
 export const ICON_PATHS: Record<IconName, { d: string; fill?: boolean }[]> = {
   home: [{ d: 'M3 10.5 12 3l9 7.5M5.5 9.5V20h13V9.5' }],
@@ -78,5 +79,6 @@ export const ICON_PATHS: Record<IconName, { d: string; fill?: boolean }[]> = {
   ],
   bell: [{ d: 'M6.5 10a5.5 5.5 0 0 1 11 0c0 4 1.5 5.5 1.5 5.5H5S6.5 14 6.5 10ZM10 19a2.2 2.2 0 0 0 4 0' }],
   trash: [{ d: 'M5 7h14M9.5 7V5h5v2M7 7l1 13h8l1-13' }],
+  grip: [{ d: 'M4 8.5h16M4 15.5h16' }],
   shield: [{ d: 'M12 3.5 19 6v6c0 4.5-3 7.4-7 8.5-4-1.1-7-4-7-8.5V6l7-2.5Z' }, { d: 'm9.5 12 1.8 1.8 3.4-3.6' }],
 }

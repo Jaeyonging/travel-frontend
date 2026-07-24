@@ -34,6 +34,8 @@ export interface AppStoreValue {
   excludedPlaceIds: string[]
   notifications: AppNotification[]
   unreadCount: number
+  /** 사용자가 직접 바꾼 Day별 장소 순서 (placeId 배열) */
+  dayOrders: Record<number, string[]>
 
   getPlace: (id: string) => Place | undefined
   isCandidate: (id: string) => boolean
@@ -45,6 +47,8 @@ export interface AppStoreValue {
   toggleExcluded: (id: string) => void
   markNotificationRead: (id: string) => void
   markAllNotificationsRead: () => void
+  setDayOrder: (day: number, placeIds: string[]) => void
+  resetDayOrder: (day: number) => void
 }
 
 export const AppStoreContext = createContext<AppStoreValue | null>(null)
@@ -55,6 +59,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [condition, setCondition] = useState<TripCondition>(DEFAULT_CONDITION)
   const [excludedPlaceIds, setExcludedPlaceIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<AppNotification[]>(NOTIFICATIONS)
+  const [dayOrders, setDayOrders] = useState<Record<number, string[]>>({})
 
   const placeMap = useMemo(() => new Map(PLACES.map((p) => [p.id, p])), [])
 
@@ -88,6 +93,18 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
   }, [])
 
+  const setDayOrder = useCallback((day: number, placeIds: string[]) => {
+    setDayOrders((prev) => ({ ...prev, [day]: placeIds }))
+  }, [])
+
+  const resetDayOrder = useCallback((day: number) => {
+    setDayOrders((prev) => {
+      const next = { ...prev }
+      delete next[day]
+      return next
+    })
+  }, [])
+
   const toggleExcluded = useCallback((id: string) => {
     setExcludedPlaceIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
@@ -111,6 +128,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       excludedPlaceIds,
       notifications,
       unreadCount: notifications.filter((n) => !n.read).length,
+      dayOrders,
 
       getPlace,
       isCandidate: (id) => candidateIds.includes(id),
@@ -122,6 +140,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       toggleExcluded,
       markNotificationRead,
       markAllNotificationsRead,
+      setDayOrder,
+      resetDayOrder,
     }),
     [
       candidateIds,
@@ -129,6 +149,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       condition,
       excludedPlaceIds,
       notifications,
+      dayOrders,
       placeMap,
       getPlace,
       toggleCandidate,
@@ -138,6 +159,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       toggleExcluded,
       markNotificationRead,
       markAllNotificationsRead,
+      setDayOrder,
+      resetDayOrder,
     ],
   )
 
