@@ -32,7 +32,8 @@ export default function SelectedPlacesStrip({
           </button>
         </div>
 
-        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto">
+        {/* 썸네일 위의 제외 버튼이 잘리지 않도록 스크롤 영역에 여백을 둡니다 */}
+        <div className="no-scrollbar -mx-1.5 mt-2 flex gap-2 overflow-x-auto px-1.5 pb-1 pt-2.5">
           {places.map((place) => (
             <div key={place.id} className="relative w-[68px] shrink-0">
               <Photo
