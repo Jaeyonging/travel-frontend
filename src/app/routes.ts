@@ -5,6 +5,7 @@ export const ROUTES = {
   saved: '/saved',
   trips: '/trips',
   my: '/my',
+  kakaoCallback: '/auth/kakao',
   notifications: '/notifications',
   extractResult: '/extract/result',
   planNew: '/plan/new',

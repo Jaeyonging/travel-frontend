@@ -5,6 +5,7 @@ import {
   ExplorePage,
   ExtractResultPage,
   HomePage,
+  KakaoCallbackPage,
   MyPage,
   NotFoundPage,
   NotificationsPage,
@@ -34,6 +35,7 @@ export default function AppRouter() {
           <Route path={ROUTES.saved} element={<SavedPage />} />
           <Route path={ROUTES.trips} element={<TripsPage />} />
           <Route path={ROUTES.my} element={<MyPage />} />
+          <Route path={ROUTES.kakaoCallback} element={<KakaoCallbackPage />} />
           <Route path={ROUTES.notifications} element={<NotificationsPage />} />
           <Route path={ROUTES.extractResult} element={<ExtractResultPage />} />
           <Route path={ROUTES.planNew} element={<PlanNewPage />} />
