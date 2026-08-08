@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Icon from '@/components/icon'
 import { Button, Chip, EmptyState } from '@/components/ui'
@@ -30,6 +30,12 @@ export default function ExplorePage() {
   const { isCandidate, toggleCandidate } = useCandidates()
   const filter = usePlaceFilter(places, state?.regionId ?? 'east-coast')
   const [detail, setDetail] = useState<Place | null>(null)
+
+  // 전체 카탈로그가 수천 곳이라 한 번에 다 그리지 않고 나눠서 렌더링
+  const PAGE_SIZE = 40
+  const [limit, setLimit] = useState(PAGE_SIZE)
+  useEffect(() => setLimit(PAGE_SIZE), [filter.result])
+  const visiblePlaces = filter.result.slice(0, limit)
 
   const handleToggle = (place: Place) => {
     const wasSaved = isCandidate(place.id)
@@ -117,18 +123,27 @@ export default function ExplorePage() {
       </div>
 
       {filter.result.length > 0 ? (
-        <ul className="divide-y divide-ink-100">
-          {filter.result.map((place) => (
-            <li key={place.id}>
-              <PlaceRow
-                place={place}
-                saved={isCandidate(place.id)}
-                onToggle={() => handleToggle(place)}
-                onOpen={() => setDetail(place)}
-              />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="divide-y divide-ink-100">
+            {visiblePlaces.map((place) => (
+              <li key={place.id}>
+                <PlaceRow
+                  place={place}
+                  saved={isCandidate(place.id)}
+                  onToggle={() => handleToggle(place)}
+                  onOpen={() => setDetail(place)}
+                />
+              </li>
+            ))}
+          </ul>
+          {filter.result.length > limit && (
+            <div className="px-5 py-4">
+              <Button variant="outline" size="lg" full onClick={() => setLimit(limit + PAGE_SIZE)}>
+                더 보기 ({limit}/{filter.result.length})
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <EmptyState
           title="찾는 장소가 없어요"
