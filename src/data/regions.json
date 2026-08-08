@@ -4,7 +4,12 @@
     "name": "동해안권",
     "emoji": "🌊",
     "color": "#1f7fe8",
-    "cities": ["강릉", "속초", "양양", "고성"],
+    "cities": [
+      "강릉",
+      "속초",
+      "양양",
+      "고성"
+    ],
     "description": "해변과 카페거리, 항구 먹거리 중심의 강원 대표 여행 권역",
     "avgMoveMinutes": 35
   },
@@ -13,7 +18,12 @@
     "name": "수도권 근교권",
     "emoji": "🚄",
     "color": "#2fa87c",
-    "cities": ["춘천", "홍천"],
+    "cities": [
+      "춘천",
+      "홍천",
+      "원주",
+      "횡성"
+    ],
     "description": "ITX로 1시간대, 당일치기와 1박 2일에 적합한 권역",
     "avgMoveMinutes": 25
   },
@@ -22,7 +32,12 @@
     "name": "산악 힐링권",
     "emoji": "⛰️",
     "color": "#a9741d",
-    "cities": ["평창", "정선", "태백"],
+    "cities": [
+      "평창",
+      "정선",
+      "태백",
+      "영월"
+    ],
     "description": "고원 목장과 트레킹, 사계절 뚜렷한 힐링 권역",
     "avgMoveMinutes": 45
   },
@@ -31,7 +46,10 @@
     "name": "남부 해안권",
     "emoji": "🏖️",
     "color": "#e0a340",
-    "cities": ["동해", "삼척"],
+    "cities": [
+      "동해",
+      "삼척"
+    ],
     "description": "동굴과 해안 절경, 상대적으로 한적한 바다 권역",
     "avgMoveMinutes": 30
   },
@@ -40,7 +58,12 @@
     "name": "DMZ 자연권",
     "emoji": "🌿",
     "color": "#0d4e9c",
-    "cities": ["철원", "화천", "양구", "인제"],
+    "cities": [
+      "철원",
+      "화천",
+      "양구",
+      "인제"
+    ],
     "description": "청정 자연과 안보 관광, 숨은 명소가 많은 권역",
     "avgMoveMinutes": 50
   }
