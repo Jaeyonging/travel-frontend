@@ -10,17 +10,7 @@ export const DEFAULT_CONDITION: TripCondition = {
   pace: 'normal',
 }
 
-/** 데모용: SNS 분석을 이미 한 번 끝낸 상태로 시작합니다. */
-export const INITIAL_CANDIDATE_IDS = [
-  'p-anmok',
-  'p-chodang',
-  'p-jungang-market',
-  'p-terarosa',
-  'p-sokcho-beach',
-  'p-abai',
-  'p-oeongchi',
-  'p-seoraksan',
-  'p-ulsanbawi',
-]
+/** 배포 기본값: 빈 상태에서 시작 — 링크 분석으로 장소를 담으면서 채워진다. */
+export const INITIAL_CANDIDATE_IDS: string[] = []
 
-export const INITIAL_ANALYZED_IDS = ['sns-1', 'sns-2', 'sns-3', 'sns-4']
+export const INITIAL_ANALYZED_IDS: string[] = []

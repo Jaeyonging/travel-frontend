@@ -1,15 +1,10 @@
 import { createContext, useCallback, useMemo, useState, type ReactNode } from 'react'
-import {
-  FESTIVALS,
-  ITINERARIES,
-  NOTIFICATIONS,
-  PLACES,
-  REGIONS,
-  SAMPLE_ITINERARY,
-  SNS_CONTENTS,
-} from '@/lib/api'
+import { ErrorState, LoadingScreen } from '@/components/feedback'
+import { api } from '@/lib/api'
+import { useAsync } from '@/hooks/useAsync'
 import type {
   AppNotification,
+  BootstrapData,
   Festival,
   Itinerary,
   Place,
@@ -20,7 +15,7 @@ import type {
 import { DEFAULT_CONDITION, INITIAL_ANALYZED_IDS, INITIAL_CANDIDATE_IDS } from './defaults'
 
 export interface AppStoreValue {
-  /** 카탈로그 (백엔드 연동 시 서버 응답으로 대체) */
+  /** 카탈로그 (서버 /api/bootstrap 응답) */
   places: Place[]
   regions: Region[]
   festivals: Festival[]
@@ -61,16 +56,33 @@ export interface AppStoreValue {
 
 export const AppStoreContext = createContext<AppStoreValue | null>(null)
 
+const BOOT_STEPS = ['서버에 연결하는 중', '장소와 일정 불러오는 중']
+
+/** 부트스트랩이 끝나야 앱을 그린다 — 로딩/실패 화면을 여기서 처리 */
 export function AppStoreProvider({ children }: { children: ReactNode }) {
+  const boot = useAsync<BootstrapData>(() => api.getBootstrap(), [])
+
+  if (boot.isError) {
+    return <ErrorState error={boot.error} onRetry={boot.retry} full />
+  }
+  if (!boot.data) {
+    return <LoadingScreen title="여행 데이터를 불러오고 있어요" steps={BOOT_STEPS} current={1} />
+  }
+  return <LoadedStoreProvider data={boot.data}>{children}</LoadedStoreProvider>
+}
+
+function LoadedStoreProvider({ data, children }: { data: BootstrapData; children: ReactNode }) {
   const [candidateIds, setCandidateIds] = useState<string[]>(INITIAL_CANDIDATE_IDS)
   const [analyzedIds, setAnalyzedIds] = useState<string[]>(INITIAL_ANALYZED_IDS)
   const [condition, setCondition] = useState<TripCondition>(DEFAULT_CONDITION)
   const [excludedPlaceIds, setExcludedPlaceIds] = useState<string[]>([])
-  const [notifications, setNotifications] = useState<AppNotification[]>(NOTIFICATIONS)
+  const [notifications, setNotifications] = useState<AppNotification[]>(data.notifications)
   const [dayOrders, setDayOrders] = useState<Record<string, string[]>>({})
-  const [savedTripIds, setSavedTripIds] = useState<string[]>([ITINERARIES[0].id])
+  const [savedTripIds, setSavedTripIds] = useState<string[]>(
+    data.itinerary ? [data.itinerary.id] : [],
+  )
 
-  const placeMap = useMemo(() => new Map(PLACES.map((p) => [p.id, p])), [])
+  const placeMap = useMemo(() => new Map(data.places.map((p) => [p.id, p])), [data.places])
 
   const getPlace = useCallback((id: string) => placeMap.get(id), [placeMap])
 
@@ -96,10 +108,12 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
     )
+    void api.markNotificationRead(id).catch(() => {}) // 실패해도 화면 상태는 유지
   }, [])
 
   const markAllNotificationsRead = useCallback(() => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+    void api.markAllNotificationsRead().catch(() => {})
   }, [])
 
   const setDayOrder = useCallback((key: string, placeIds: string[]) => {
@@ -126,12 +140,12 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AppStoreValue>(
     () => ({
-      places: PLACES,
-      regions: REGIONS,
-      festivals: FESTIVALS,
-      snsContents: SNS_CONTENTS,
-      itineraries: ITINERARIES,
-      itinerary: SAMPLE_ITINERARY,
+      places: data.places,
+      regions: data.regions,
+      festivals: data.festivals,
+      snsContents: data.snsContents,
+      itineraries: data.itineraries,
+      itinerary: data.itinerary,
 
       candidateIds,
       candidates: candidateIds
@@ -144,7 +158,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       unreadCount: notifications.filter((n) => !n.read).length,
       savedTripIds,
       dayOrders,
-      getItinerary: (id) => ITINERARIES.find((it) => it.id === id),
+      getItinerary: (id) => data.itineraries.find((it) => it.id === id),
 
       getPlace,
       isCandidate: (id) => candidateIds.includes(id),
@@ -161,6 +175,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       addSavedTrip,
     }),
     [
+      data,
       candidateIds,
       analyzedIds,
       condition,

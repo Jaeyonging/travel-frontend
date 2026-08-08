@@ -97,7 +97,7 @@ export default function NotificationsPage() {
 
       <div className="pt-6">
         <MockNotice>
-          알림은 화면 확인용 목업입니다. 실제 발송은 백엔드와 푸시 설정을 붙인 뒤 동작합니다.
+          알림 목록과 읽음 상태는 서버와 연동됩니다. 실제 푸시 발송은 준비 중입니다.
         </MockNotice>
       </div>
     </div>
