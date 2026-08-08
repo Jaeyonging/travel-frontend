@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { DAYTIME_MOODS, MOODS, type Mood } from './moods'
 import { createRandom, pick } from './random'
@@ -11,6 +11,8 @@ const VIEW_H = 200
 export interface PhotoProps {
   /** 같은 seed는 항상 같은 그림 */
   seed: string
+  /** 실제 사진 URL(관광공사 firstimage). URL이 아니거나 로드 실패면 일러스트로 폴백 */
+  src?: string | null
   kind?: SceneKind
   mood?: Mood
   className?: string
@@ -18,11 +20,16 @@ export interface PhotoProps {
 }
 
 /**
- * 실제 사진(관광공사 이미지 API) 연동 전 단계의 일러스트 풍경.
+ * 관광공사(공공데이터) 실사진을 우선 보여주고,
+ * 사진이 없는 장소는 일러스트 풍경으로 폴백합니다.
  * 씬 구현은 scenes.tsx, 색은 moods.ts로 분리되어 있습니다.
  */
-export default function Photo({ seed, kind = 'beach', mood, className, children }: PhotoProps) {
+export default function Photo({ seed, src, kind = 'beach', mood, className, children }: PhotoProps) {
   const scene = useMemo(() => buildScene(seed, kind, mood), [seed, kind, mood])
+  const [failed, setFailed] = useState(false)
+  useEffect(() => setFailed(false), [src])
+
+  const photoUrl = src && /^https?:\/\//.test(src) && !failed ? src : null
 
   return (
     <div className={cn('relative overflow-hidden bg-ink-100', className)}>
@@ -34,6 +41,15 @@ export default function Photo({ seed, kind = 'beach', mood, className, children 
       >
         {scene}
       </svg>
+      {photoUrl && (
+        <img
+          src={photoUrl}
+          alt=""
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
       {children}
     </div>
   )

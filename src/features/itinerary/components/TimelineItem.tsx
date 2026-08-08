@@ -45,7 +45,7 @@ export default function TimelineItem({
       </div>
 
       <Photo
-        seed={place.id}
+        seed={place.id} src={place.image}
         kind={sceneOfPlace(place)}
         className="h-[84px] w-[84px] shrink-0 rounded-xl"
       />

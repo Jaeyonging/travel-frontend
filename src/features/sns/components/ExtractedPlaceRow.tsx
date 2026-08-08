@@ -30,7 +30,7 @@ export default function ExtractedPlaceRow({
       className="pressable flex cursor-pointer gap-3 px-5 py-3 active:bg-ink-50"
     >
       <Photo
-        seed={place.id}
+        seed={place.id} src={place.image}
         kind={sceneOfPlace(place)}
         className="h-[82px] w-[82px] shrink-0 rounded-xl"
       />

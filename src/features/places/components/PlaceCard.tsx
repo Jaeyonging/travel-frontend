@@ -33,7 +33,7 @@ export default function PlaceCard({
       className="pressable shrink-0 cursor-pointer text-left"
     >
       <div className="relative">
-        <Photo seed={place.id} kind={sceneOfPlace(place)} className="h-[124px] w-full rounded-2xl">
+        <Photo seed={place.id} src={place.image} kind={sceneOfPlace(place)} className="h-[124px] w-full rounded-2xl">
           <div className="absolute right-2 top-2">
             <SaveButton saved={saved} onToggle={onToggle} tone="dark" />
           </div>
@@ -51,10 +51,12 @@ export default function PlaceCard({
           {place.city} · {CATEGORY_META[place.category].label}
         </p>
         <div className="mt-1 flex items-center gap-1.5">
-          <span className="flex items-center gap-0.5 text-[12px] font-bold text-ink-900">
-            <Icon name="star" size={12} filled className="text-coral-500" />
-            {place.rating.toFixed(1)}
-          </span>
+          {place.rating > 0 && (
+            <span className="flex items-center gap-0.5 text-[12px] font-bold text-ink-900">
+              <Icon name="star" size={12} filled className="text-coral-500" />
+              {place.rating.toFixed(1)}
+            </span>
+          )}
           <VerifyChip level={place.verification} />
         </div>
       </div>

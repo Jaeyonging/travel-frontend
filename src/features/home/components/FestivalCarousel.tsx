@@ -10,7 +10,7 @@ export default function FestivalCarousel({ festivals }: { festivals: Festival[] 
       {festivals.map((festival, i) => (
         <div key={festival.id} className="w-[220px] shrink-0">
           <Photo
-            seed={festival.id}
+            seed={festival.id} src={festival.image}
             kind={FESTIVAL_SCENES[i % FESTIVAL_SCENES.length]}
             className="h-[120px] w-full rounded-2xl"
           >

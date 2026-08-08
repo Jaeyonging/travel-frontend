@@ -37,7 +37,7 @@ export default function SelectedPlacesStrip({
           {places.map((place) => (
             <div key={place.id} className="relative w-[68px] shrink-0">
               <Photo
-                seed={place.id}
+                seed={place.id} src={place.image}
                 kind={sceneOfPlace(place)}
                 className="h-[68px] w-[68px] rounded-xl"
               />

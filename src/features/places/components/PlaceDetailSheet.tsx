@@ -34,8 +34,12 @@ export default function PlaceDetailSheet({ place, onClose }: PlaceDetailSheetPro
   const saved = isCandidate(shown.id)
 
   const stats: [string, string][] = [
-    ['평점', shown.rating.toFixed(1)],
-    ['리뷰', formatCount(shown.reviewCount)],
+    ...(shown.rating > 0
+      ? ([
+          ['평점', shown.rating.toFixed(1)],
+          ['리뷰', formatCount(shown.reviewCount)],
+        ] as [string, string][])
+      : []),
     ['권장 체류', formatMinutes(shown.stayMinutes)],
   ]
 
@@ -46,7 +50,7 @@ export default function PlaceDetailSheet({ place, onClose }: PlaceDetailSheetPro
 
   return (
     <Sheet open={!!place} onClose={onClose}>
-      <Photo seed={shown.id} kind={sceneOfPlace(shown)} className="h-48 w-full">
+      <Photo seed={shown.id} src={shown.image} kind={sceneOfPlace(shown)} className="h-48 w-full">
         <button
           type="button"
           onClick={onClose}

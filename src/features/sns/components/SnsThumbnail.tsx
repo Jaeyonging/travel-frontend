@@ -18,7 +18,7 @@ export default function SnsThumbnail({
   const isYoutube = content.platform === 'youtube'
 
   return (
-    <Photo seed={content.id} kind={sceneOfSns(content.platform)} className={className}>
+    <Photo seed={content.id} src={content.thumbnail} kind={sceneOfSns(content.platform)} className={className}>
       {labelStyle !== 'none' && (
         <span className="absolute bottom-1 left-1 flex items-center gap-1 rounded bg-ink-900/60 px-1.5 py-0.5 text-[9.5px] font-bold text-white">
           <Icon name={isYoutube ? 'play' : 'instagram'} size={9} />

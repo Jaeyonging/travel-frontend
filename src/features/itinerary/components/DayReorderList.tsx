@@ -129,7 +129,7 @@ export default function DayReorderList({ places, onReorder }: DayReorderListProp
               </span>
 
               <Photo
-                seed={place.id}
+                seed={place.id} src={place.image}
                 kind={sceneOfPlace(place)}
                 className="h-10 w-10 shrink-0 rounded-lg"
               />

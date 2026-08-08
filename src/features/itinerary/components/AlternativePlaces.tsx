@@ -27,7 +27,7 @@ export default function AlternativePlaces({ places, onAdd }: AlternativePlacesPr
         {places.map((place) => (
           <div key={place.id} className="flex items-center gap-2.5 rounded-xl bg-white p-2.5">
             <Photo
-              seed={place.id}
+              seed={place.id} src={place.image}
               kind={sceneOfPlace(place)}
               className="h-11 w-11 shrink-0 rounded-lg"
             />

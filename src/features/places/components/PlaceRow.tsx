@@ -33,7 +33,7 @@ export default function PlaceRow({ place, saved, onToggle, onOpen, rank }: Place
       )}
 
       <Photo
-        seed={place.id}
+        seed={place.id} src={place.image}
         kind={sceneOfPlace(place)}
         className="h-[76px] w-[76px] shrink-0 rounded-xl"
       />
@@ -48,13 +48,15 @@ export default function PlaceRow({ place, saved, onToggle, onOpen, rank }: Place
           {formatMinutes(place.stayMinutes)}
         </p>
         <div className="mt-1 flex items-center gap-2">
-          <span className="flex items-center gap-0.5 text-[12px] font-bold">
-            <Icon name="star" size={12} filled className="text-coral-500" />
-            {place.rating.toFixed(1)}
-            <span className="ml-0.5 font-medium text-ink-300">
-              ({formatCount(place.reviewCount)})
+          {place.rating > 0 && (
+            <span className="flex items-center gap-0.5 text-[12px] font-bold">
+              <Icon name="star" size={12} filled className="text-coral-500" />
+              {place.rating.toFixed(1)}
+              <span className="ml-0.5 font-medium text-ink-300">
+                ({formatCount(place.reviewCount)})
+              </span>
             </span>
-          </span>
+          )}
           {place.source === 'sns' && <Badge className="bg-ink-900 text-white">SNS 추출</Badge>}
         </div>
       </div>
